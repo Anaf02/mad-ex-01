@@ -7,6 +7,16 @@ class App {
     // Game logic for a number guessing game
     fun playNumberGame(digitsToGuess: Int = 4) {
         //TODO: build a menu which calls the functions and works with the return values
+        val randomNumber = generateRandomNonRepeatingNumber(digitsToGuess)
+        println("A random number with no repeating digits has been generated. Can you guess it?")
+        //println("$randomNumber")
+        do
+        {
+            println("Enter your guess:")
+            val guess = readlnOrNull().toString().toInt()
+            println(checkUserInputAgainstGeneratedNumber(guess, randomNumber))
+        } while (guess != randomNumber)
+        println("Congratulations, you guessed the number")
     }
 
     /**
@@ -25,7 +35,7 @@ class App {
      */
     val generateRandomNonRepeatingNumber: (Int) -> Int = { length ->
         //TODO implement the function
-        if(length !in 1..9){
+        if (length !in 1..9) {
             throw IllegalArgumentException()
         }
 
@@ -52,13 +62,11 @@ class App {
      */
     val checkUserInputAgainstGeneratedNumber: (Int, Int) -> CompareResult = { input, generatedNumber ->
         //TODO implement the function
-        if(input !is Int || generatedNumber !is Int)
-        {
+        if (input !is Int || generatedNumber !is Int) {
             throw IllegalArgumentException("Input and generated number must be of type Int")
         }
 
-        if(input.toString().length!=generatedNumber.toString().length)
-        {
+        if (input.toString().length != generatedNumber.toString().length) {
             throw IllegalArgumentException("Input must have the same number of digits as the generated number")
         }
 
@@ -67,10 +75,8 @@ class App {
         val digitsGuessedCorrectly = inputDigits.intersect(generatedNumberDigits).size
 
         var digitsGuessedCorrectlyWithPosition = 0
-        for(i in inputDigits.indices)
-        {
-            if (inputDigits[i] == generatedNumberDigits[i])
-            {
+        for (i in inputDigits.indices) {
+            if (inputDigits[i] == generatedNumberDigits[i]) {
                 digitsGuessedCorrectlyWithPosition++
             }
         }
@@ -82,4 +88,7 @@ class App {
 fun main() {
     println("Hello World!")
     // TODO: call the App.playNumberGame function with and without default arguments
+    val game = App()
+    game.playNumberGame()
+    game.playNumberGame(5)
 }
