@@ -25,7 +25,13 @@ class App {
      */
     val generateRandomNonRepeatingNumber: (Int) -> Int = { length ->
         //TODO implement the function
-        0   // return value is a placeholder
+        if(length !in 1..9){
+            throw IllegalArgumentException()
+        }
+
+        val digits = (1..9).toList().shuffled()
+        val number = digits.take(length).joinToString("").toInt()
+        number   // return value is a placeholder
     }
 
     /**
@@ -46,7 +52,30 @@ class App {
      */
     val checkUserInputAgainstGeneratedNumber: (Int, Int) -> CompareResult = { input, generatedNumber ->
         //TODO implement the function
-        CompareResult(0, 0)   // return value is a placeholder
+        if(input !is Int || generatedNumber !is Int)
+        {
+            throw IllegalArgumentException("Input and generated number must be of type Int")
+        }
+
+        if(input.toString().length!=generatedNumber.toString().length)
+        {
+            throw IllegalArgumentException("Input must have the same number of digits as the generated number")
+        }
+
+        val inputDigits = input.toString().toList()
+        val generatedNumberDigits = generatedNumber.toString().toList()
+        val digitsGuessedCorrectly = inputDigits.intersect(generatedNumberDigits).size
+
+        var digitsGuessedCorrectlyWithPosition = 0
+        for(i in inputDigits.indices)
+        {
+            if (inputDigits[i] == generatedNumberDigits[i])
+            {
+                digitsGuessedCorrectlyWithPosition++
+            }
+        }
+
+        CompareResult(digitsGuessedCorrectly, digitsGuessedCorrectlyWithPosition)   // return value is a placeholder
     }
 }
 
